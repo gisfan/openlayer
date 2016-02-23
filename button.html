@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="js/ol.js"></script>
+	<script scr="js/ol-debug.js"></script>
+<script>
+ var osmLayer = new ol.layer.Tile({
+          //source: new ol.source.OSM()
+		  source : new ol.source.MapQuest({layer: 'osm'})
+	});
+	
+var map = new ol.Map({
+          target: 'map',
+		  layers: [osmLayer],
+		  view:view
+        });
+	
+	
+$(document).ready(function(){
+	
+	$('button').click(function(){
+		
+		var url =$('#url').val();
+		var layer =$('#layer').val();
+		var server =$('#server').val();
+		
+		if(url && layer){
+			var wms= new ol.layer.Tile({
+				source: new ol.source.TileWMS({
+					url:url,
+					params:{'LAYERS': layer},
+					serverType: server,
+					crossOrigin:''
+				})
+			});
+			
+			
+			 
+			map.addLayer(wms);
+		}
+	});
+	});
+
+</script>
+</head>
+<body>
+<div id="box">
+		<input type="text" name="url" placeholder="URL" id="url">
+		<input type="text" name="layer" placeholder="Layer" id="layer">
+		<select id="server">
+			<option value="geoserver">Geoserver</option>
+			<option value="mapserver">MapServer</option>
+		</select>
+<button  onclick="myFunction()">Try it</button></div>
+
+</body>
+</html>
